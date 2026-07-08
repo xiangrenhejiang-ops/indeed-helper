@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Indeed One-Click Apply",
+  "version": "1.0",
+  "description": "Automate Indeed applications using Gemini AI",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": ["activeTab"]
+}
