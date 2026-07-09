@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
 const fs = require('fs');
-const { PdfReader } = require('pdfreader');
+// 引入完美适配新版 Node.js 的纯 JS 解析库
+const pdfParse = require('pdf-parse-fork');
 
 const app = express();
 const PORT = 3000;
@@ -28,31 +29,22 @@ app.post('/api/upload', upload.single('resume'), async (req, res) => {
     });
 
     try {
+        // 读取本地二进制文件
         const fileBuffer = fs.readFileSync(req.file.path);
         
-        const extractedText = await new Promise((resolve, reject) => {
-            let fullText = "";
-            new PdfReader().parseBuffer(fileBuffer, (err, item) => {
-                if (err) {
-                    reject(err);
-                } else if (!item) {
-                    resolve(fullText);
-                } else if (item.text) {
-                    fullText += item.text + " ";
-                }
-            });
-        });
+        // 解析 PDF
+        const pdfData = await pdfParse(fileBuffer);
         
         console.log("\n📄 [Parser] Successfully extracted text from PDF:\n");
         console.log("--------------------------------------------------");
-        console.log(extractedText.trim());
+        console.log(pdfData.text.trim());
         console.log("--------------------------------------------------\n");
 
         res.json({
             status: "success",
             message: "Resume received and text parsed successfully on backend!",
             fileName: req.file.originalname,
-            textLength: extractedText.length
+            textLength: pdfData.text.length
         });
 
     } catch (parseError) {
