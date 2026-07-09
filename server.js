@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
 const fs = require('fs');
-// 引入完美适配新版 Node.js 的纯 JS 解析库
 const pdfParse = require('pdf-parse-fork');
 
 const app = express();
