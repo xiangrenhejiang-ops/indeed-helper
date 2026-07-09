@@ -28,10 +28,8 @@ app.post('/api/upload', upload.single('resume'), async (req, res) => {
     });
 
     try {
-        // 读取本地二进制文件
         const fileBuffer = fs.readFileSync(req.file.path);
         
-        // 解析 PDF
         const pdfData = await pdfParse(fileBuffer);
         
         console.log("\n📄 [Parser] Successfully extracted text from PDF:\n");
