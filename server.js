@@ -62,12 +62,13 @@ ${resumeText}
         console.log(aiAnalysis);
         console.log("--------------------------------------------------\n");
 
-        // 7. Return the final structured response back to the extension frontend
-        res.json({
-            status: "success",
-            fileName: req.file.originalname,
-            analysis: aiAnalysis
-        });
+    // 7. Return the final structured response back to the extension frontend
+      res.json({
+        status: "success",
+        fileName: req.file.originalname,
+        analysis: aiAnalysis,
+        resumeText: resumeText
+      });
 
     } catch (error) {
         console.error("❌ [Server Error] Process failed during parsing or AI analysis:", error);
@@ -77,4 +78,64 @@ ${resumeText}
 
 app.listen(PORT, () => {
     console.log(`🚀 Week 3 backend server is ready at http://localhost:${PORT}`);
+});
+
+// --- Week 4: Job Matching API ---
+// This endpoint receives the scraped job data and matches it with the parsed resume
+app.post('/api/match', async (req, res) => {
+  try {
+    const { jobTitle, jobDescription, resumeText } = req.body;
+
+    if (!jobDescription || !resumeText) {
+      return res.status(400).json({
+        status: 'error',
+        error: 'Missing job description or resume data.'
+      });
+    }
+
+    // Construct the prompt for Gemini to cross-reference resume and job description
+    const prompt = `
+      You are an expert career coach and recruiter. Analyze the fit between the candidate's resume and the job description below.
+      
+      [Job Title]
+      ${jobTitle}
+
+      [Job Description]
+      ${jobDescription}
+
+      [Candidate Resume]
+      ${resumeText}
+
+      Please provide a structured response with the following format (use Markdown):
+      ### 🎯 Match Score: [Insert a percentage score here, e.g., 85%]
+      
+      ### 🌟 Key Strengths
+      - [Bullet points indicating where the candidate aligns perfectly with the requirements]
+      
+      ### ⚠️ Gaps & Missing Skills
+      - [Bullet points showing what requirements or skills are missing from the resume]
+      
+      ### 💡 Optimization Suggestions
+      - [Actionable advice on how to tailor the resume for this specific role]
+    `;
+
+    // Call your Gemini API here (reusing your existing Gemini integration method)
+    // Assuming you have a function or logic like model.generateContent(prompt)
+    // For now, let's simulate or call your existing gemini instance:
+    const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash" });
+    const result = await model.generateContent(prompt);
+    const analysisText = result.response.text();
+
+    res.json({
+      status: 'success',
+      matchAnalysis: analysisText
+    });
+
+  } catch (error) {
+    console.error('Gemini Match Error:', error);
+    res.status(500).json({
+      status: 'error',
+      error: 'Failed to process AI matching analysis.'
+    });
+  }
 });
