@@ -1,19 +1,22 @@
 {
   "manifest_version": 3,
-  "name": "Indeed One-Click Apply",
+  "name": "Indeed & LinkedIn AI Helper",
   "version": "1.0",
-  "description": "Automate Indeed applications using Gemini AI",
-  "action": {
-    "default_popup": "popup.html"
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "background": {
+    "service_worker": "background.js"
   },
-  "permissions": ["activeTab", "storage"],
   "content_scripts": [
     {
-     "matches": [
-          "https://*.indeed.com/*",
-          "https://*.linkedin.com/*"
-        ],
+      "matches": ["https://*.linkedin.com/*", "https://*.indeed.com/*"],
       "js": ["content.js"]
     }
-  ]
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  }
 }
