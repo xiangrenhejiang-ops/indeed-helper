@@ -1,39 +1,54 @@
-# Indeed AI Helper 🚀
+# AI Copilot Partner 🚀
 
-A Chrome extension designed to help job seekers automatically analyze resumes and match them with Indeed job postings using Gemini AI.
-
----
-
-## 🛠️ Project Progress
-
-### Week 1 & 2: Project Setup & Local PDF Uploads
-- Initialized the Chrome extension boilerplate with manifest.json.
-- Set up a local backend server using Node.js, Express, and Multer to handle file uploads.
-- Integrated pdf-parse-fork to smoothly extract text from local resume PDFs.
-
-### Week 3: End-to-End Pipeline & Gemini Paid Tier Integration (Current)
-- **Resolved Gemini API 503 Errors**: Addressed frequent server deadlocks and rate limits under the Free Tier by linking a billing account in Google AI Studio to activate Paid Tier (high-priority access). API requests now process instantly without congestion.
-- **Frontend UI Dynamic Rendering**: Refactored popup.html and popup.js. Users can now upload their resumes and see the live Gemini analysis report (Core Skills, Project Highlights, and Actionable Suggestions) render directly inside the extension popup.
+An advanced, privacy-first Chrome Extension that automates job description scraping from major career platforms and conducts cross-reference matching analysis against your resume using the Gemini 1.5 Flash API.
 
 ---
 
-## 📅 Next Steps (Week 4)
-We will dive straight into core feature expansions: implementing web scraping on Indeed job description pages. This will allow the AI to cross-reference the candidate's resume with specific job requirements and calculate automated matching scores.
+## ✨ Features
+
+- **Cross-Platform Scraping**: Robust, dynamic content injection supporting both **LinkedIn** (including complex dual-pane split layouts) and **Indeed**.
+- **Resilient Fallback Pipeline**: Built-in substring fallback mechanics that scan full-page text context based on structural keywords, ensuring maximum structural uptime.
+- **State Persistence (`chrome.storage`)**: The extension intelligently caches your parsed resume and the latest match report html natively within the browser, mitigating repetitive uploads and reducing redundant API quota overhead.
+- **Premium UI/UX Rendering**: A sleek, modern custom markdown parser built using native Javascript regex to deliver responsive, dynamically-themed result badges (Green/Yellow/Red) mirroring candidate compatibility thresholds.
 
 ---
 
-## 🚀 How to Run Locally
+## 🛠️ Tech Stack
 
-### 1. Backend Server
+- **Frontend**: Chrome Extension Manifest V3, HTML5, Vanilla JavaScript, CSS3
+- **Backend**: Node.js, Express.js
+- **AI Engine**: Google Gemini API (`gemini-1.5-flash`)
+- **Parsers**: `pdf-parse` for local file processing
 
-# Install dependencies
-npm install
+---
 
-# Start the server
-node server.js
+## 🚀 Getting Started
 
+### 1. Prerequisites
+Ensure you have Node.js installed, and obtain an API key from Google AI Studio.
 
-### 2. Chrome Extension
-1. Open Chrome and navigate to chrome://extensions/
-2. Enable Developer mode (top right switcher).
-3. Click Load unpacked and select this project folder.
+### 2. Backend Setup
+1. Clone this repository and navigate to the root directory:
+   cd indeed-helper
+2. Install the server dependencies:
+   npm install
+3. Create a .env file in the root directory and add your Gemini API Key:
+   GEMINI_API_KEY=your_actual_api_key_here
+4. Fire up the local server:
+   node server.js
+   *The server will initialize and begin listening on http://localhost:3000.*
+
+### 3. Chrome Extension Installation
+1. Fire up Google Chrome and navigate to chrome://extensions/.
+2. Toggle on Developer mode in the top-right corner.
+3. Click Load unpacked Boston in the top-left corner.
+4. Select the project directory (indeed-helper) that houses your manifest.json.
+
+---
+
+## 🎯 How to Use
+
+1. Click on the AI Copilot Partner extension icon from your toolbar.
+2. Hit 📁 Select Resume PDF to parse and persistently upload your resume into the local storage ecosystem.
+3. Browse to any specific job description view on LinkedIn or Indeed.
+4. Click ⚡ Analyze Job Match to view your dynamically-compiled, tailored compatibility report instantly!
